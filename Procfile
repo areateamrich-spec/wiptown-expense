@@ -1,1 +1,1 @@
-web: python server.py
+web: pip install psycopg2-binary && python server.py
