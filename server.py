@@ -9,7 +9,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse
 from datetime import datetime
 
-PORT = int(os.environ.get('PORT', 8765))
+PORT = int(os.environ.get('PORT', os.environ.get('RAILWAY_PORT', 8080)))
 DATABASE_URL = os.environ.get('DATABASE_URL', '')
 
 # ─── DB abstraction: Postgres หรือ SQLite ────────────────────────────────────
