@@ -1,6 +1,6 @@
 # WIPTOWN Expense Tracker
 
-## วิธีรัน (ง่ายมาก)
+## วิธีรัน Local (ง่ายมาก)
 
 ### Mac / Linux
 ```bash
@@ -14,8 +14,24 @@ bash start.sh
 ```bash
 python3 server.py
 ```
-
 แล้วเปิดเบราว์เซอร์ที่ **http://localhost:8765**
+
+---
+
+## Deploy บน Railway
+
+### ขั้นตอน
+1. อัปโหลดไฟล์ทั้งหมดขึ้น GitHub
+2. สร้าง project ใหม่ใน Railway → Deploy from GitHub
+3. เพิ่ม Postgres service ใน Railway
+4. ใน wiptown-expense service → Variables → เพิ่ม:
+   - `DATABASE_URL` = เลือกจาก autocomplete ของ Railway (ไม่ต้องพิมพ์เอง)
+5. **อย่าตั้ง PORT variable** — ให้ Railway จัดการเอง
+6. Deploy → เปิด URL ได้เลย
+
+### หมายเหตุ
+- ห้ามตั้ง Variable ชื่อ PORT ใน Railway dashboard
+- ถ้าเคยตั้ง PORT ไว้ให้ลบออกก่อน
 
 ---
 
@@ -23,20 +39,13 @@ python3 server.py
 
 | ไฟล์ | หน้าที่ |
 |------|---------|
-| `server.py` | Python web server + REST API |
+| `server.py` | Python web server + REST API (รองรับ PostgreSQL + SQLite) |
 | `index.html` | หน้าเว็บ UI ทั้งหมด |
-| `wiptown.db` | ฐานข้อมูล SQLite (สร้างอัตโนมัติตอนรันครั้งแรก) |
-| `start.sh` | รันบน Mac/Linux |
-| `start.bat` | รันบน Windows |
+| `requirements.txt` | Python packages (psycopg2-binary) |
+| `Procfile` | บอก Railway วิธีรัน |
+| `nixpacks.toml` | config การ build |
 
-## ฐานข้อมูล (SQLite)
+## ฐานข้อมูล
 
-- **expenses** — รายการค่าใช้จ่ายทั้งหมด (รวมสลิป base64)
-- **templates** — เทมเพลตค่าใช้จ่ายประจำเดือน
-- **month_generated** — ติดตามว่าเดือนไหนโหลด template ไปแล้ว
-- **settings** — รายได้, Discord webhook, SMS config
-
-## ความต้องการ
-
-- Python 3.6+ (มาพร้อม Mac/Linux)
-- ไม่ต้องติดตั้ง library เพิ่มเติมใดๆ
+- **Local**: SQLite (wiptown.db) สร้างอัตโนมัติ
+- **Railway**: PostgreSQL (ตั้ง DATABASE_URL variable)
